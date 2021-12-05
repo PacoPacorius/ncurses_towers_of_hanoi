@@ -17,7 +17,7 @@
 #include "menu.h"
 
 void init_ncurses();
-WINDOW* create_win(int menu_height, int menu_width, int start_y, int start_x);
+WINDOW* create_win(MENU * menu);
 
 
 int main(){
@@ -27,23 +27,11 @@ int main(){
     MENU* menu;
 
     init_ncurses();
-
-        // dimensions for the selection window //
-        int towers_height = 6;
-        int towers_length = 40;
-        int start_x = (COLS - towers_length) / 2;
-        int start_y = (LINES - towers_height) / 2 + (LINES / 7);
-        // dimensions for the selection window //
- 
     /* Variables that need all of the scope */
 
-    towers = create_win(towers_height, towers_length, start_y, start_x);             // allocate memory for the selection window
-    my_items = create_items(towers, towers_height, towers_length, start_y, start_x); // subroutine that allocates memory for the selection menu items (see menu.c)
-    menu = new_menu(my_items);                                                       // associate the items with their menu
-
-    set_menu_win(menu, towers);                                                      // Associate the menu with the selection window
-    set_menu_sub(menu, derwin(towers, 4, 38, 1, 1));                                 // Create its own little window within towers so that towers still looks pretty
-    //mvprintw(LINES - 2, COLS - 7, "Hello!");
+    my_items = create_items(towers);        // subroutine that allocates memory for the selection menu items (see menu.c)
+    menu = new_menu(my_items);              // associate the items with their menu
+    towers = create_win(menu);                  // allocate memory for the selection window
 
     /* take care of all the visual stuff */
     refresh();                          
@@ -82,12 +70,18 @@ void init_ncurses(){
 
 }
 
-WINDOW* create_win(int menu_height, int menu_width, int start_y, int start_x){
-    WINDOW* menu;
+WINDOW* create_win(MENU* menu){
+    int towers_height = 6;
+    int towers_length = 40;
+    int start_x = (COLS - towers_length) / 2;
+    int start_y = (LINES - towers_height) / 2 + (LINES / 7);
+    WINDOW* towers;
 
-    menu = newwin(menu_height, menu_width, start_y, start_x);
-    box(menu, 0, 0);
-    //mvwaddstr(menu, 1, 1, "Testing Testing one two one two");
+    towers = newwin(towers_height, towers_length, start_y, start_x);
+    box(towers, 0, 0);
 
-    return menu;
+    set_menu_win(menu, towers);                                                      // Associate the menu with the selection window
+    set_menu_sub(menu, derwin(towers, towers_height - 2, towers_length - 2, 1, 1));  // Create its own little window within towers so that towers still looks pretty
+
+    return towers;
 }

@@ -1,19 +1,13 @@
 #include "menu.h"
 
-char* choices[] = {
-    "[1]",
-    "[2]",
-    "[3]"
-};
-
-ITEM** create_items(WINDOW* win, int height, int width, int start_y, int start_x){
+ITEM** create_items(){
     ITEM** selection;
     int i;
 
     char* choices[] = {
-        "[1]",
-        "[2]",
-        "[3]"
+        "Pole 1",
+        "Pole 2",
+        "Pole 3"
     };
 
     selection = (ITEM **)calloc(number_choices + 1, sizeof(ITEM*));
