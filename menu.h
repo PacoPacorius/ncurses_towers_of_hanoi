@@ -7,6 +7,6 @@
 
 #define number_choices 3
 
-ITEM** create_items(WINDOW* win, int height, int width, int start_y, int start_x);
+ITEM** create_items();
 
 #endif
