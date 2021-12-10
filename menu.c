@@ -5,9 +5,9 @@ ITEM** create_items(){
     int i;
 
     char* choices[] = {
-        "Pole 1",
-        "Pole 2",
-        "Pole 3"
+        "  Pole 1  ",
+        "  Pole 2  ",
+        "  Pole 3  "
     };
 
     selection = (ITEM **)calloc(number_choices + 1, sizeof(ITEM*));

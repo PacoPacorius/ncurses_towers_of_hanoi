@@ -1,20 +1,24 @@
-/* This works! Initialisation is complete. Next is to make the main game loop, make a menu with three choices and then draw over those choices
- *
- * The window does show I'm just a silly goose
+/* The window does show I'm just a silly goose
  *
  * Make a menu  -done!
  *
- * Make the menu horizontal
+ * Make the menu horizontal -done
  *
- * Main game loop prototype! Will only be able to scroll through the menu's options
+ * Main game loop prototype! Will only be able to scroll through the menu's options -done
  *
- * Second window and drawing the towers
+ * Second window and drawing the towers (also giving the selection menu options more space)
+ * 1. Make an array to manage the blocks  -done
+ * 2. Implement three stacks 
+ * 3. Draw a window
+ * 4. Draw a line with numbers (the poles are invisible over the numbers)
+ * 5. Draw the blocks in series on pole 1
  */
 
 #include <ncurses.h>
 #include <menu.h>
 
 #include "menu.h"
+#include "logic.h"
 
 void init_ncurses();
 WINDOW* create_win(MENU * menu);
@@ -25,6 +29,10 @@ int main(){
     WINDOW* towers;
     ITEM** my_items;
     MENU* menu;
+
+    int c;
+    bool move;
+    int blocks[5] = { 1, 2, 3, 4, 5 };
 
     init_ncurses();
     /* Variables that need all of the scope */
@@ -40,8 +48,17 @@ int main(){
     /* take care of all the visual stuff */
 
     /* temp game loop, will be removed once the subroutine for the permanent game loop is implemented */
-    while(getch() != 'q'){
-        //refresh();
+    while((c = getch()) != 'q'){
+        switch(c){
+            case KEY_RIGHT:
+                menu_driver(menu, REQ_RIGHT_ITEM);
+                break;
+            case KEY_LEFT:
+                menu_driver(menu, REQ_LEFT_ITEM);
+                break;
+        }
+        logic(c, &move);
+        wrefresh(towers);
     }
     /* temp game loop, will be removed once the subroutine for the permanent game loop is implemented */
 
@@ -82,6 +99,8 @@ WINDOW* create_win(MENU* menu){
 
     set_menu_win(menu, towers);                                                      // Associate the menu with the selection window
     set_menu_sub(menu, derwin(towers, towers_height - 2, towers_length - 2, 1, 1));  // Create its own little window within towers so that towers still looks pretty
+    menu_opts_off(menu, O_SHOWDESC);
+    set_menu_format(menu, 1, 3);
 
     return towers;
 }
