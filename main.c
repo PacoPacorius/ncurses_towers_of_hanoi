@@ -19,6 +19,7 @@
 
 #include "menu.h"
 #include "logic.h"
+#include "stack.h"
 
 void init_ncurses();
 WINDOW* create_win(MENU * menu);
