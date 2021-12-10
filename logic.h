@@ -5,5 +5,9 @@
 #include <stdlib.h>
 #include <menu.h>
 
-void logic(int input, bool* move);
+#include "stack.h"
+
+void logic(int input, int* move);
+
+
 #endif

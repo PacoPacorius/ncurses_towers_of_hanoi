@@ -1,5 +1,6 @@
 #include "logic.h"
 
-void logic(int input, bool* move){
+void logic(int input, int* move){
 
 }
+

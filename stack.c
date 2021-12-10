@@ -1,0 +1,36 @@
+#include "stack.h"
+
+struct Stack* create_stack(unsigned int capacity){
+    
+    struct Stack* temp_stack = (struct Stack*)malloc(sizeof(struct Stack));     // allocate memory for the stack struct object
+    temp_stack->capacity = capacity;
+    temp_stack->top = -1;
+    temp_stack->array = (int*)malloc(temp_stack->capacity * sizeof(int));       // allocate memory for the int array inside the stack 
+
+    return temp_stack;
+}
+
+int is_stack_full(struct Stack* stack){
+    return (stack->top == stack->capacity - 1); 
+}
+
+int is_stack_empty(struct Stack* stack){
+    return stack->top == -1;
+}
+
+void push(struct Stack* stack, int number){
+    stack->array[++stack->top] = number;
+
+    if(is_stack_full(stack) == 1){          // overflow condition, wrap back at the beginning of the int array and continue
+        stack->top = 0;
+        stack->array[stack->top] = number;
+    }
+}
+
+int pop(struct Stack* stack){               
+    if(stack->top == 0)                     // underflow condition, wrap at the end of the array and continue
+        stack->top = stack->capacity - 1;
+    else stack->top--;
+
+     return stack->array[stack->top];
+}
