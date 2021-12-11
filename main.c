@@ -9,10 +9,9 @@
  * Second window and drawing the win (also giving the selection menu options more space)
  * 1. Make an array to manage the blocks  -done
  * 2. Implement three stacks -done
- * 3. Draw a window
- * 4. Draw a horizontal line with numbers (the poles are invisible over the numbers)
+ * 3. Draw a window -done
+ * 4. Draw a horizontal line with numbers (the poles are invisible over the numbers) -done
  * 5. Draw the blocks in series on pole 1
- *
  */
 
 #include <ncurses.h>
@@ -25,18 +24,20 @@
 #define BLOCK_NUMBER 5
 
 void init_ncurses();
-WINDOW* create_win(MENU * menu);
+WINDOW* create_win_with_menu(MENU* menu);
+WINDOW* create_win();
 
 
 int main(){
     /* Variables that need all of the scope */
     WINDOW* win;
+    WINDOW* tower_win;
     ITEM** my_items;
     MENU* menu;
 
     int c;                                          // for handling user unput
     int move = 0;                                   // 1 when user is about to move a block
-    int blocks[BLOCK_NUMBER] = { 1, 2, 3, 4, 5 };   // the numbers will hopefully help with drawing the blocks
+    const int blocks[BLOCK_NUMBER] = { 1, 2, 3, 4, 5 };   // the numbers will hopefully help with drawing the blocks
     struct Stack* towers[3];                        // the blocks will go in here
     /* Variables that need all of the scope */
 
@@ -52,13 +53,16 @@ int main(){
 
     my_items = create_items(win);                   // subroutine that allocates memory for the selection menu items (see menu.c)
     menu = new_menu(my_items);                      // associate the items with their menu
-    win = create_win(menu);                         // allocate memory for the selection window
+    win = create_win_with_menu(menu);               // allocate memory for the selection window
+
+    tower_win = create_win();
     /* various initialisation subroutines */
 
     /* take care of all the visual stuff */
     refresh();                          
     post_menu(menu);
     wrefresh(win);
+    wrefresh(tower_win);
     /* take care of all the visual stuff */
 
     /* temp game loop, will be removed once the subroutine for the permanent game loop is implemented */
@@ -105,20 +109,43 @@ void init_ncurses(){
 
 }
 
-WINDOW* create_win(MENU* menu){
-    int towers_height = 6;
+WINDOW* create_win_with_menu(MENU* menu){
+    int towers_height = 4;
     int towers_length = 40;
     int start_x = (COLS - towers_length) / 2;
-    int start_y = (LINES - towers_height) / 2 + (LINES / 7);
+    int start_y = (LINES - towers_height) / 2 + (LINES / 4);
     WINDOW* towers;
 
     towers = newwin(towers_height, towers_length, start_y, start_x);
-    box(towers, 0, 0);
+    //box(towers, 0, 0);
 
     set_menu_win(menu, towers);                                                      // Associate the menu with the selection window
     set_menu_sub(menu, derwin(towers, towers_height - 2, towers_length - 2, 1, 1));  // Create its own little window within towers so that towers still looks pretty
     menu_opts_off(menu, O_SHOWDESC);
     set_menu_format(menu, 1, 3);
+    set_menu_mark(menu, "");
 
+    return towers;
+}
+
+WINDOW* create_win(){
+    int i;
+
+    int towers_height = 8;
+    int towers_length = 40;
+    int start_x = (COLS - towers_length) / 2;
+    int start_y = (LINES - towers_height) / 2 - (LINES / 8);
+    WINDOW* towers;
+
+    towers = newwin(towers_height, towers_length, start_y, start_x);
+    box(towers, 0, 0);
+
+    wmove(towers, towers_height - 3, 1);
+    for(i = 1; i < towers_length - 1; i++)
+       waddch(towers, ACS_HLINE);
+
+    mvwprintw(towers, towers_height - 2, towers_length / 7, "[1]");
+    mvwprintw(towers, towers_height - 2, towers_length / 2 - 3, "[2]");
+    mvwprintw(towers, towers_height - 2, 3 * towers_length / 4, "[3]");
     return towers;
 }
