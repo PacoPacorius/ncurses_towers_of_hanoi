@@ -7,7 +7,8 @@
 
 #include "stack.h"
 
-void logic(int input, int* move);
+void logic(int input);
 
+void draw_poles(WINDOW* win, const int blocks[5]);
 
 #endif

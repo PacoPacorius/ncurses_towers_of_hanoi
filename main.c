@@ -1,17 +1,9 @@
-/* The window does show I'm just a silly goose
- *
- * Make a menu  -done!
- *
- * Make the menu horizontal -done
- *
- * Main game loop prototype! Will only be able to scroll through the menu's options -done
- *
- * Second window and drawing the win (also giving the selection menu options more space)
- * 1. Make an array to manage the blocks  -done
- * 2. Implement three stacks -done
- * 3. Draw a window -done
- * 4. Draw a horizontal line with numbers (the poles are invisible over the numbers) -done
- * 5. Draw the blocks in series on pole 1
+/* 
+ * Implement the game logic!
+ * 1. Enter toggles move mode (need to save from which pole the block will leave)
+ * 2. Enter again pops from the stack of the first pole and pushes the stack of the destination pole
+ * 3. Update block position
+ * 4. Check if blocks are all with the correct order in the third pole, in which case the game ends
  */
 
 #include <ncurses.h>
@@ -22,6 +14,9 @@
 #include "stack.h"
 
 #define BLOCK_NUMBER 5
+#define POLE_1 towers_length / 7
+#define POLE_2 towers_length / 2 - 3
+#define POLE_3 3 * towers_length / 4
 
 void init_ncurses();
 WINDOW* create_win_with_menu(MENU* menu);
@@ -36,7 +31,6 @@ int main(){
     MENU* menu;
 
     int c;                                          // for handling user unput
-    int move = 0;                                   // 1 when user is about to move a block
     const int blocks[BLOCK_NUMBER] = { 1, 2, 3, 4, 5 };   // the numbers will hopefully help with drawing the blocks
     struct Stack* towers[3];                        // the blocks will go in here
     /* Variables that need all of the scope */
@@ -56,6 +50,7 @@ int main(){
     win = create_win_with_menu(menu);               // allocate memory for the selection window
 
     tower_win = create_win();
+    draw_poles(tower_win, blocks);
     /* various initialisation subroutines */
 
     /* take care of all the visual stuff */
@@ -74,8 +69,10 @@ int main(){
             case KEY_LEFT:
                 menu_driver(menu, REQ_LEFT_ITEM);
                 break;
+            case KEY_ENTER:
+                logic(c);
+                break;
         }
-        logic(c, &move);    // will eventually handle the logic of the game
         wrefresh(win);
     }
     /* temp game loop, will be removed once the subroutine for the permanent game loop is implemented */
@@ -95,6 +92,7 @@ int main(){
 
     /* end of program */
     endwin();
+    printf("Thanks for playing! <3\n");
     return 0;
     /* end of program */
 }
@@ -131,7 +129,7 @@ WINDOW* create_win_with_menu(MENU* menu){
 WINDOW* create_win(){
     int i;
 
-    int towers_height = 8;
+    int towers_height = 9;
     int towers_length = 40;
     int start_x = (COLS - towers_length) / 2;
     int start_y = (LINES - towers_height) / 2 - (LINES / 8);
@@ -144,8 +142,8 @@ WINDOW* create_win(){
     for(i = 1; i < towers_length - 1; i++)
        waddch(towers, ACS_HLINE);
 
-    mvwprintw(towers, towers_height - 2, towers_length / 7, "[1]");
-    mvwprintw(towers, towers_height - 2, towers_length / 2 - 3, "[2]");
-    mvwprintw(towers, towers_height - 2, 3 * towers_length / 4, "[3]");
+    mvwprintw(towers, towers_height - 2, POLE_1, "[1]");
+    mvwprintw(towers, towers_height - 2, POLE_2, "[2]");
+    mvwprintw(towers, towers_height - 2, POLE_3, "[3]");
     return towers;
 }
