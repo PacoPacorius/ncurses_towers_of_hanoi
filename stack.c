@@ -7,6 +7,8 @@ struct Stack* create_stack(unsigned int capacity){
     temp_stack->top = -1;
     temp_stack->array = (int*)malloc(temp_stack->capacity * sizeof(int));       // allocate memory for the int array inside the stack 
 
+    int i;
+    for(i = 0; i < capacity; i++) temp_stack->array[i] = -1;
     return temp_stack;
 }
 
@@ -19,7 +21,8 @@ int is_stack_empty(struct Stack* stack){
 }
 
 void push(struct Stack* stack, int number){
-    stack->array[++stack->top] = number;
+    stack->top++;
+    stack->array[stack->top] = number;
 
     if(is_stack_full(stack) == 1){          // overflow condition, wrap back at the beginning of the int array and continue
         stack->top = 0;
@@ -28,9 +31,23 @@ void push(struct Stack* stack, int number){
 }
 
 int pop(struct Stack* stack){               
+    int previous_top;
+
+    previous_top = stack->array[stack->top];
+    stack->array[stack->top] = -1;
+
     if(stack->top == 0)                     // underflow condition, wrap at the end of the array and continue
         stack->top = stack->capacity - 1;
     else stack->top--;
+    
+    return stack->array[stack->top];
+}
 
-     return stack->array[stack->top];
+int number_of_items(struct Stack* stack){
+    int i, counter;
+
+    for(i = 0, counter = 0; i < stack->capacity; i++)
+        if(stack->array[i] != -1) counter++;
+    
+    return counter;
 }

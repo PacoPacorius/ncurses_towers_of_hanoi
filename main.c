@@ -1,9 +1,16 @@
 /* 
  * Implement the game logic!
- * 1. Enter toggles move mode (need to save from which pole the block will leave)
- * 2. Enter again pops from the stack of the first pole and pushes the stack of the destination pole
+ * 1. Enter toggles move mode (need to save from which pole the block will leave) -done
+ * 2. Enter again pops from the stack of the first pole and pushes the stack of the destination pole -done
  * 3. Update block position
  * 4. Check if blocks are all with the correct order in the third pole, in which case the game ends
+ * 5. (You forgot all the illegal move check!)
+ *
+ *
+ * Alright, so step 3 has many problems.
+ * *Initial pole formation is one pixel lower than it should be
+ * *At some point if I move a block from a stack that has one to a stack that has 4, the first stack will have zero and the second one will have 3, also no more movements will be made
+ * *I'd suggest to test the stack implementation
  */
 
 #include <ncurses.h>
@@ -31,6 +38,8 @@ int main(){
     MENU* menu;
 
     int c;                                          // for handling user unput
+    int selection = 0;
+    struct Stack* temp_stack = NULL;
     const int blocks[BLOCK_NUMBER] = { 1, 2, 3, 4, 5 };   // the numbers will hopefully help with drawing the blocks
     struct Stack* towers[3];                        // the blocks will go in here
     /* Variables that need all of the scope */
@@ -50,13 +59,14 @@ int main(){
     win = create_win_with_menu(menu);               // allocate memory for the selection window
 
     tower_win = create_win();
-    draw_poles(tower_win, blocks);
+   // draw_poles(tower_win, blocks);
     /* various initialisation subroutines */
 
     /* take care of all the visual stuff */
     refresh();                          
     post_menu(menu);
     wrefresh(win);
+    update_blocks(towers, tower_win);                                                    // redraw the blocks to their correct positions
     wrefresh(tower_win);
     /* take care of all the visual stuff */
 
@@ -69,8 +79,23 @@ int main(){
             case KEY_LEFT:
                 menu_driver(menu, REQ_LEFT_ITEM);
                 break;
-            case KEY_ENTER:
-                logic(c);
+            case ']':
+                if(selection == 1){                                                     // if player has selected a source
+                    selection = 0;                                                      
+
+                    move_block(towers[item_index(current_item(menu))], temp_stack);     // move a block from the source to the destination
+                    mvprintw(LINES - 1, 1, "              ");
+
+                    update_blocks(towers, tower_win);                                                    // redraw the blocks to their correct positions
+                    wrefresh(tower_win);
+                }
+                else{
+                    selection = 1;
+
+                    temp_stack = towers[item_index(current_item(menu))];
+
+                    mvprintw(LINES - 1, 1, "Move to where?");
+                }
                 break;
         }
         wrefresh(win);
@@ -115,7 +140,7 @@ WINDOW* create_win_with_menu(MENU* menu){
     WINDOW* towers;
 
     towers = newwin(towers_height, towers_length, start_y, start_x);
-    //box(towers, 0, 0);
+    box(towers, 0, 0);
 
     set_menu_win(menu, towers);                                                      // Associate the menu with the selection window
     set_menu_sub(menu, derwin(towers, towers_height - 2, towers_length - 2, 1, 1));  // Create its own little window within towers so that towers still looks pretty
