@@ -27,8 +27,13 @@ void logic(int input){
 }
 
 void move_block(struct Stack* destination, struct Stack* source){
+    int temp;
 
-   if(source->array[source->top] != -1 || is_stack_empty(source) == 1) push(destination, pop(source)); //this error checking still doesnt work :((
+    if(source->array[source->top] != -1 || is_stack_empty(source) == 1){
+        temp = pop(source);
+        if(temp != -1)
+            push(destination, temp); //this error checking still doesnt work :((
+   }
 }
 
 void update_blocks(struct Stack* stack_array[3], WINDOW* win){

@@ -13,7 +13,7 @@ struct Stack* create_stack(unsigned int capacity){
 }
 
 int is_stack_full(struct Stack* stack){
-    return (stack->top == stack->capacity - 1); 
+    return (stack->top == stack->capacity); 
 }
 
 int is_stack_empty(struct Stack* stack){
@@ -21,26 +21,29 @@ int is_stack_empty(struct Stack* stack){
 }
 
 void push(struct Stack* stack, int number){
-    stack->top++;
-    stack->array[stack->top] = number;
 
     if(is_stack_full(stack) == 1){          // overflow condition, wrap back at the beginning of the int array and continue
         stack->top = 0;
         stack->array[stack->top] = number;
     }
+    else {
+        stack->top++;
+        stack->array[stack->top] = number;
+    }
 }
 
 int pop(struct Stack* stack){               
+    if(is_stack_empty(stack) == 1) return -1;
     int previous_top;
 
     previous_top = stack->array[stack->top];
     stack->array[stack->top] = -1;
 
     if(stack->top == 0)                     // underflow condition, wrap at the end of the array and continue
-        stack->top = stack->capacity - 1;
+        stack->top = stack->capacity;
     else stack->top--;
     
-    return stack->array[stack->top];
+    return previous_top;
 }
 
 int number_of_items(struct Stack* stack){

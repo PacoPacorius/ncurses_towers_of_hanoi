@@ -8,7 +8,7 @@
  *
  *
  * Alright, so step 3 has many problems.
- * *Initial pole formation is one pixel lower than it should be
+ * *Initial pole formation is one pixel lower than it should be, the rest are fine
  * *At some point if I move a block from a stack that has one to a stack that has 4, the first stack will have zero and the second one will have 3, also no more movements will be made
  * *I'd suggest to test the stack implementation
  */
