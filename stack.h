@@ -19,4 +19,6 @@ void push(struct Stack* stack, int number);
 
 int pop(struct Stack* stack);
 
+int number_of_items(struct Stack* stack);
+
 #endif
