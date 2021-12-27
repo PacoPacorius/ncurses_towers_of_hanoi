@@ -9,8 +9,10 @@
  *
  * Alright, so step 3 has many problems.
  * *Initial pole formation is one pixel lower than it should be, the rest are fine
- * *At some point if I move a block from a stack that has one to a stack that has 4, the first stack will have zero and the second one will have 3, also no more movements will be made
- * *I'd suggest to test the stack implementation
+ * *At some point if I move a block from a stack that has one to a stack that has 4, the first stack will have zero and the second one will have 3, also no more movements will be made -solved, twas faulty stack implementation
+ * *I'd suggest to test the stack implementation -the stack implementation proved to be quite faulty indeed
+ *
+ * The problem with the stack implementation is not yet fixed! When moving a block from a recently emptied out stack, a new 6th block is materialised
  */
 
 #include <ncurses.h>
@@ -79,7 +81,7 @@ int main(){
             case KEY_LEFT:
                 menu_driver(menu, REQ_LEFT_ITEM);
                 break;
-            case ']':
+            case 's':
                 if(selection == 1){                                                     // if player has selected a source
                     selection = 0;                                                      
 
