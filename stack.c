@@ -5,10 +5,10 @@ struct Stack* create_stack(unsigned int capacity){
     struct Stack* temp_stack = (struct Stack*)malloc(sizeof(struct Stack));     // allocate memory for the stack struct object
     temp_stack->capacity = capacity;
     temp_stack->top = -1;
-    temp_stack->array = (int*)malloc(temp_stack->capacity * sizeof(int));       // allocate memory for the int array inside the stack 
+    temp_stack->array = (int*)malloc((temp_stack->capacity - 1) * sizeof(int));       // allocate memory for the int array inside the stack 
 
     int i;
-    for(i = 0; i < capacity + 1; i++) temp_stack->array[i] = -1;
+    for(i = 0; i < capacity; i++) temp_stack->array[i] = -1;
     return temp_stack;
 }
 
