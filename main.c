@@ -2,17 +2,12 @@
  * Implement the game logic!
  * 1. Enter toggles move mode (need to save from which pole the block will leave) -done
  * 2. Enter again pops from the stack of the first pole and pushes the stack of the destination pole -done
- * 3. Update block position
+ * 3. Update block position 
  * 4. Check if blocks are all with the correct order in the third pole, in which case the game ends
  * 5. (You forgot all the illegal move check!)
  *
  *
- * Alright, so step 3 has many problems.
- * *Initial pole formation is one pixel lower than it should be, the rest are fine
- * *At some point if I move a block from a stack that has one to a stack that has 4, the first stack will have zero and the second one will have 3, also no more movements will be made -solved, twas faulty stack implementation
- * *I'd suggest to test the stack implementation -the stack implementation proved to be quite faulty indeed
- *
- * The problem with the stack implementation is not yet fixed! When moving a block from a recently emptied out stack, a new 6th block is materialised
+ * Removing the blocks is the next task!
  */
 
 #include <ncurses.h>
