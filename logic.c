@@ -70,15 +70,23 @@ void update_blocks(struct Stack* stack_array[3], WINDOW* win){
             k = stack_array[i]->array[j];           // contains the number(block id) of the stack item we are currently looking at
             snprintf(str, 5, "%d", k);
 
-            if(k > -1){                                                    // if this isn't a blank space
-                mvwaddch(win, height - 4 - j, x_offset, ACS_BLOCK); // draw the block
+            if(k >= 0){                                                    // if this isn't a blank space
+                mvwaddch(win, height - 4 - j, x_offset, ACS_BLOCK); // draw the centre block 
+
+                for(l = 0; l < k; l++){                                                     // Give the boxes width
+                    mvwaddch(win, height - 4 - j, x_offset - l, ACS_BLOCK);
+                    mvwaddch(win, height - 4 - j, x_offset + l, ACS_BLOCK);
+                }  
             }
-            else mvwaddch(win, height - 4 - j, x_offset, ' ');
-             /*   for(l = 0; l < k; l++){                                                     // a loop to draw all the boxes
-                    mvwaddch(win, height - 4 + j - block_num, x_offset - l, ACS_BLOCK);
-                    mvwaddch(win, height - 4 + j - block_num, x_offset + l, ACS_BLOCK);
-                }*/
-            //}
+            else{
+                for(l = 0; l < 5; l++){
+                    mvwaddch(win, height - 4 - j, x_offset - l, ' ');      // erase the centre block if there is a -1 in this place in the stack
+                    mvwaddch(win, height - 4 - j, x_offset + l, ' ');      // erase the centre block if there is a -1 in this place in the stack
+                }
+
+            }
+           
+               
         }
     }
 }
