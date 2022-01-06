@@ -7,7 +7,7 @@
 
 #include "stack.h"
 
-void logic(int input);
+int win_clause(struct Stack* target);
 
 void draw_poles(WINDOW* win, const int blocks[5]);
 
