@@ -7,7 +7,7 @@
  * 5. (You forgot all the illegal move check!)
  *
  *
- * Removing the blocks is the next task!
+ * Illegal move check!
  */
 
 #include <ncurses.h>

@@ -27,10 +27,24 @@ void logic(int input){
 
 }
 
+int  move_illegal(struct Stack* destination, struct Stack* source){
+    char temp[5];
+
+    snprintf(temp, 5, "%d", source->array[source->top]);
+    mvwaddstr(stdscr, LINES - 2, COLS / 2 - 2, temp);
+
+    snprintf(temp, 5, "%d", destination->array[destination->top]);
+    mvwaddstr(stdscr, LINES - 2, COLS / 2 + 2, temp);
+
+    if(source->array[source->top] == -1) return 1;
+    if(source->array[source->top] <= destination->array[destination->top] || destination->array[destination->top] < 1) return 0;
+    return 1;
+}
+
 void move_block(struct Stack* destination, struct Stack* source){
     int temp;
 
-    if(source->array[source->top] != -1 || is_stack_empty(source) == 1){
+    if(source->array[source->top] != -1 && move_illegal(destination, source) != 1) {
         temp = pop(source);
         if(temp != -1)
             push(destination, temp); //this error checking still doesnt work :((
@@ -57,7 +71,6 @@ void update_blocks(struct Stack* stack_array[3], WINDOW* win){
                 x_offset = POLE_3;
                 break;
         }
-
 
 
         block_num = number_of_items(stack_array[i]);        // number of items in a stack 
