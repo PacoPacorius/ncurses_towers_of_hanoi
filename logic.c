@@ -59,6 +59,7 @@ void update_blocks(struct Stack* stack_array[3], WINDOW* win){
         }
 
 
+
         block_num = number_of_items(stack_array[i]);        // number of items in a stack 
         mvwprintw(stdscr, LINES - 2, x_offset, "%i", block_num);    // debugging this will go away soon
 

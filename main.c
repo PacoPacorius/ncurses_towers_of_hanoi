@@ -2,7 +2,7 @@
  * Implement the game logic!
  * 1. Enter toggles move mode (need to save from which pole the block will leave) -done
  * 2. Enter again pops from the stack of the first pole and pushes the stack of the destination pole -done
- * 3. Update block position 
+ * 3. Update block position -done
  * 4. Check if blocks are all with the correct order in the third pole, in which case the game ends
  * 5. (You forgot all the illegal move check!)
  *
