@@ -8,3 +8,4 @@ Arrow keys to move and 's' to move a block
 Makefile
 init splash screen / pseudo menu
 make the win show up without getting an extra key
+debug mode through a command line argument
