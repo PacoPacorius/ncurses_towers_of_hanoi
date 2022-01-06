@@ -5,6 +5,19 @@
 #define POLE_2 length / 2 - 2
 #define POLE_3 3 * length / 4 + 1
 
+int win_clause(struct Stack* target){
+    int check_succesful = 1, i;
+    char str[2];
+    for(i = 0; i < 5; i++){
+        if(5 - i != target->array[i]) check_succesful = 0;
+    snprintf(str, 2, "%d", 5 - i);
+    //mvwaddstr(stdscr, LINES - 7, 2, str);
+    }
+        
+    
+    return check_succesful;
+}
+
 void print_stack_contents(struct Stack* stack_array[3], WINDOW* win);
 
 void draw_poles(WINDOW* win, const int blocks[5]){
@@ -23,18 +36,14 @@ void draw_poles(WINDOW* win, const int blocks[5]){
   }
 }
 
-void logic(int input){
-
-}
-
 int  move_illegal(struct Stack* destination, struct Stack* source){
     char temp[5];
 
     snprintf(temp, 5, "%d", source->array[source->top]);
-    mvwaddstr(stdscr, LINES - 2, COLS / 2 - 2, temp);
+    //mvwaddstr(stdscr, LINES - 2, COLS / 2 - 2, temp);
 
     snprintf(temp, 5, "%d", destination->array[destination->top]);
-    mvwaddstr(stdscr, LINES - 2, COLS / 2 + 2, temp);
+    //mvwaddstr(stdscr, LINES - 2, COLS / 2 + 2, temp);
 
     if(source->array[source->top] == -1) return 1;
     if(source->array[source->top] <= destination->array[destination->top] || destination->array[destination->top] < 1) return 0;
@@ -74,9 +83,9 @@ void update_blocks(struct Stack* stack_array[3], WINDOW* win){
 
 
         block_num = number_of_items(stack_array[i]);        // number of items in a stack 
-        mvwprintw(stdscr, LINES - 2, x_offset, "%i", block_num);    // debugging this will go away soon
+        //mvwprintw(stdscr, LINES - 2, x_offset, "%i", block_num);    // debugging this will go away soon
 
-        print_stack_contents(stack_array, win);
+        //print_stack_contents(stack_array, win);
         
 
         for(j = 0; j < 5; j++){    // iterates through the stack in LIFO order
