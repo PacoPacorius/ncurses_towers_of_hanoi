@@ -69,7 +69,7 @@ int main(){
 
     /* temp game loop, will be removed once the subroutine for the permanent game loop is implemented */
     while((c = getch()) != 'q'){
-        if(win_clause(towers[0]) == 1) break;
+        if(win_clause(towers[2]) == 1) break;
         switch(c){
             case KEY_RIGHT:
                 menu_driver(menu, REQ_RIGHT_ITEM);
@@ -102,7 +102,7 @@ int main(){
     int towers_length, tower_height;
     getmaxyx(tower_win, tower_height, towers_length);
 
-    if(win_clause(towers[0]) == 1){
+    if(win_clause(towers[2]) == 1){
         mvwaddstr(stdscr, 3, (COLS - towers_length) / 2 + POLE_1, "Congrats! You're winner!");
         getch();
     }
