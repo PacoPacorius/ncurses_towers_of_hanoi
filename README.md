@@ -1,5 +1,5 @@
 # ncurses_towers_of_hanoi
-towers of hanoi implemented with c & ncurses
+Towers of hanoi implemented with c & ncurses for Linux. Compile with "gcc *.c -lmenu -lncurses".
 
 ## Controls
 Arrow keys to move and 's' to move a block
