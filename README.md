@@ -2,7 +2,7 @@
 Towers of hanoi implemented with c & ncurses for Linux. Compile with "gcc *.c -lmenu -lncurses".
 
 ## Controls
-Arrow keys to move and 's' to move a block. Q to quit.
+Arrow keys to move and 's' to move a block. 'Q' to quit.
 
 ## Todo
 Makefile,
